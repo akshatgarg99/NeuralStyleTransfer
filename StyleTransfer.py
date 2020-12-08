@@ -2,7 +2,6 @@ import torch
 import torch.nn.functional as F
 from torch import optim,nn
 from torchvision import models,transforms,datasets
-import requests
 from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
@@ -78,7 +77,7 @@ class NeuralStyleTransfer:
         loss = 0
         for layer in weights:
             _, d, h, w = s_features[layer].shape
-            t_gram = gramian(t_features[layer])
+            t_gram = self.gramian(t_features[layer])
 
             layer_loss = torch.mean((t_gram - s_grams[layer]) ** 2) / (d * h * w)
             loss += layer_loss * weights[layer]
@@ -96,7 +95,7 @@ class NeuralStyleTransfer:
         return image
 
     def save_image(self, target):
-        picture = im_convert(target)
+        picture = self.im_convert(target)
         plt.imshow(picture)
         import matplotlib.image as im
         ll = im.imsave('/content/Result/new_ss.jpg', picture)
@@ -116,7 +115,7 @@ class NeuralStyleTransfer:
 
         s_features = self.get_features(self.model, self.style)
         c_features = self.get_features(self.model, self.content)
-        s_grams = {layer: gramian(features) for layer, features in s_features.items()}
+        s_grams = {layer: self.gramian(features) for layer, features in s_features.items()}
 
         opt = optim.Adam([self.target], lr=0.009)
 
@@ -133,7 +132,7 @@ class NeuralStyleTransfer:
 
             if step % show == 0:
                 print('======Total loss: ', total_loss.item(), 'after ', step, ' steps ======')
-                plt.imshow(im_convert(target))
+                plt.imshow(self.im_convert(self.target))
                 plt.show()
         end = time.time()
         print('time required: ', end - start)
