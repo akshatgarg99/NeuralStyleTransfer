@@ -59,13 +59,13 @@ class NeuralStyleTransfer:
                 features[layers[name]]=x
         return features
 
-    def gramian(tensor):
+    def gramian(self,tensor):
         # Compute the gramian matrix of a single channel from a single conv layer.
 
         t = tensor.view(tensor.shape[1], -1)
         return t @ t.T
 
-    def content_loss(c_features, t_features):
+    def content_loss(self,c_features, t_features):
         # Compute mean squared content loss of all feature maps.
 
         loss = 0.5 * (t_features['conv4_2'] - c_features['conv4_2']) ** 2
@@ -85,7 +85,7 @@ class NeuralStyleTransfer:
 
         return loss
 
-    def im_convert(tensor):
+    def im_convert(self,tensor):
         # Display a tensor as an image.
         image = tensor.to("cpu").clone().detach()
         image = image.numpy().squeeze(0)
@@ -94,4 +94,49 @@ class NeuralStyleTransfer:
         image = image.clip(0, 1)
 
         return image
+
+    def save_image(self, target):
+        picture = im_convert(target)
+        plt.imshow(picture)
+        import matplotlib.image as im
+        ll = im.imsave('/content/Result/new_ss.jpg', picture)
+
+    def forward(self)
+        start = time.time()
+        style_weights = {'conv1_1': .2,
+                         'conv2_1': .2,
+                         'conv3_1': .2,
+                         'conv4_1': .2,
+                         'conv5_1': .2}
+
+        show = 500
+        steps = 3000
+        c_weight = 2
+        s_weight = 50
+
+        s_features = self.get_features(self.model, self.style)
+        c_features = self.get_features(self.model, self.content)
+        s_grams = {layer: gramian(features) for layer, features in s_features.items()}
+
+        opt = optim.Adam([self.target], lr=0.009)
+
+        for step in range(1, steps + 1):
+            opt.zero_grad()
+
+            t_features = self.get_features(self.model, self.target)
+            c_loss = self.content_loss(c_features, t_features)
+            s_loss = self.style_loss(s_grams, t_features, style_weights)
+
+            total_loss = c_weight * c_loss + s_weight * s_loss
+            total_loss.backward()
+            opt.step()
+
+            if step % show == 0:
+                print('======Total loss: ', total_loss.item(), 'after ', step, ' steps ======')
+                plt.imshow(im_convert(target))
+                plt.show()
+        end = time.time()
+        print('time required: ', end - start)
+
+
 
