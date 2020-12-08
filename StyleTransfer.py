@@ -105,8 +105,8 @@ class NeuralStyleTransfer:
                          'conv4_1': .2,
                          'conv5_1': .2}
 
-        show = 5
-        steps = 100
+        show = 500
+        steps = 10000
         c_weight = 2
         s_weight = 50
 
