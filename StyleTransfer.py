@@ -95,7 +95,7 @@ class NeuralStyleTransfer:
         picture = self.im_convert(self.target)
         plt.imshow(picture)
         import matplotlib.image as im
-        ll = im.imsave('/content/Result/new_ss.jpg', picture)
+        ll = im.imsave('/content/Result/target.jpg', picture)
 
     def forward(self):
         start = time.time()
