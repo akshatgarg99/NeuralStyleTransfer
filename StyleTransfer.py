@@ -1,7 +1,6 @@
 import torch
-import torch.nn.functional as F
-from torch import optim,nn
-from torchvision import models,transforms,datasets
+from torch import optim, nn
+from torchvision import models, transforms, datasets
 from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
@@ -12,11 +11,11 @@ class NeuralStyleTransfer:
     def __init__(self, content_image, style_image):
         self.model = models.vgg19(pretrained=True).features
         for pram in self.model.parameters():
-            pram.requires_grad(False)
+            pram.requires_grad_(False)
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.model.to(self.device)
         self.content = self.load_image(content_image).to(self.device)
-        self.target = self.content.clone().requires_grad(True).to(self.device)
+        self.target = self.content.clone().requires_grad_(True).to(self.device)
         self.style = self.load_image(style_image).to(self.device)
 
     def load_image(self, path, max_size=400, shape=None, gray=False):
@@ -53,39 +52,37 @@ class NeuralStyleTransfer:
 
         x = image
         for name, layer in self.model._modules.items():
-            x=layer(x)
+            x = layer(x)
             if name in layers:
-                features[layers[name]]=x
+                features[layers[name]] = x
         return features
 
-    def gramian(self,tensor):
+    def gramian(self, tensor):
         # Compute the gramian matrix of a single channel from a single conv layer.
-
         t = tensor.view(tensor.shape[1], -1)
         return t @ t.T
 
-    def content_loss(self,c_features, t_features):
+    def content_loss(self, c_features, t_features):
         # Compute mean squared content loss of all feature maps.
-
         loss = 0.5 * (t_features['conv4_2'] - c_features['conv4_2']) ** 2
         return torch.mean(loss)
 
-    def style_loss(self, s_grams, t_features, weights):
-
+    def style_loss(self, s_grams, t_features, s_features, weights):
         # Compute style loss, i.e. the weighted sum of MSE of all layers.
         # for each style feature, get target and style gramians, compare
         loss = 0
+
         for layer in weights:
             _, d, h, w = s_features[layer].shape
             t_gram = self.gramian(t_features[layer])
-
             layer_loss = torch.mean((t_gram - s_grams[layer]) ** 2) / (d * h * w)
             loss += layer_loss * weights[layer]
 
         return loss
 
-    def im_convert(self,tensor):
+    def im_convert(self, tensor):
         # Display a tensor as an image.
+
         image = tensor.to("cpu").clone().detach()
         image = image.numpy().squeeze(0)
         image = image.transpose(1, 2, 0)
@@ -94,13 +91,13 @@ class NeuralStyleTransfer:
 
         return image
 
-    def save_image(self, target):
-        picture = self.im_convert(target)
+    def save_image(self):
+        picture = self.im_convert(self.target)
         plt.imshow(picture)
         import matplotlib.image as im
         ll = im.imsave('/content/Result/new_ss.jpg', picture)
 
-    def forward(self)
+    def forward(self):
         start = time.time()
         style_weights = {'conv1_1': .2,
                          'conv2_1': .2,
@@ -124,7 +121,7 @@ class NeuralStyleTransfer:
 
             t_features = self.get_features(self.model, self.target)
             c_loss = self.content_loss(c_features, t_features)
-            s_loss = self.style_loss(s_grams, t_features, style_weights)
+            s_loss = self.style_loss(s_grams, t_features, s_features, style_weights)
 
             total_loss = c_weight * c_loss + s_weight * s_loss
             total_loss.backward()
@@ -136,6 +133,9 @@ class NeuralStyleTransfer:
                 plt.show()
         end = time.time()
         print('time required: ', end - start)
+        self.save_image()
+        return None
 
-
-
+if __name__ =='__main__':
+    transfer=NeuralStyleTransfer()
+    transfer.forward('content_image.jpg','style.jpg')
