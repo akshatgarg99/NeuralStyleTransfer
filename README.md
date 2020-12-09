@@ -6,7 +6,8 @@ Content Image                           |  Style Image                   | Resul
 :--------------------------------------:|:------------------------------:|:-------------------------:
 <img src=content_images/content_image2.jpg width="200" height="250"/> |  <img src=style_images/style2.jpg width="200" height="250"/> |  <img src=Result/target2.jpeg width="200" height="250"/>
 <img src=content_images/content_image5.jpg width="200" height="250"/> |  <img src=style_images/style5.jpg width="200" height="250"/> |  <img src=Result/target4.jpg width="200" height="250"/>
-<img src=content_images/content_image.jpg width="200" height="250"/> |  <img src=style_images/style.jpg width="200" height="250"/> |  <img src=Result/target.jpg width="200" height="250"/>
+<img src=content_images/content_image3.jpg width="200" height="250"/> |  <img src=style_images/style3.jpg width="200" height="250"/> |  <img src=Result/target3.jpg width="200" height="250"/>
+
 
 An implementation of neural style in PyTorch.
 
