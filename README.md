@@ -10,7 +10,7 @@ Content Image                           |  Style Image                   | Resul
 
 An implementation of neural style in PyTorch.
 
-<img src=content_images/content_image5.jpg width="100" height="100"/>
+<img src=content_images/content_image5.jpg width="100" height="200"/>
 
 
 The class takes in the file path of the content image and the style image form the respective folders and generates the result in the result folder. Few examples have been provided.
