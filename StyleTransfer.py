@@ -105,8 +105,13 @@ class NeuralStyleTransfer:
                          'conv4_1': .2,
                          'conv5_1': .2}
 
+<<<<<<< HEAD
         show = 5
         steps = 100
+=======
+        show = 500
+        steps = 10000
+>>>>>>> 10fa2c416cc9b7eec687b00ae61fbf9b356299dd
         c_weight = 2
         s_weight = 50
 
@@ -140,6 +145,8 @@ class NeuralStyleTransfer:
 if __name__ == '__main__':
     content_path = 'content_images/content_image.jpg'
     style_path = 'style_images/style.jpg'
+    content_path = 'content_image.jpg'
+    style_path = 'style.jpg'
     transfer = NeuralStyleTransfer(content_image_path=content_path,style_image_path=style_path)
     transfer.forward()
 
