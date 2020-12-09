@@ -30,7 +30,7 @@ class NeuralStyleTransfer:
 
         if gray:
             image = image.convert('L')
-            image = image.conver('RGB')
+            image = image.convert('RGB')
         in_transform = transforms.Compose([transforms.Resize(size),
                                            transforms.ToTensor(),
                                            transforms.Normalize(
