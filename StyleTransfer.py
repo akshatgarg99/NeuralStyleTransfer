@@ -8,15 +8,15 @@ import time
 
 
 class NeuralStyleTransfer:
-    def __init__(self, content_image, style_image):
+    def __init__(self, content_image_path, style_image_path):
         self.model = models.vgg19(pretrained=True).features
         for pram in self.model.parameters():
             pram.requires_grad_(False)
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.model.to(self.device)
-        self.content = self.load_image(content_image).to(self.device)
+        self.content = self.load_image(content_image_path).to(self.device)
         self.target = self.content.clone().requires_grad_(True).to(self.device)
-        self.style = self.load_image(style_image).to(self.device)
+        self.style = self.load_image(style_image_path).to(self.device)
 
     def load_image(self, path, max_size=400, shape=None, gray=False):
         image = Image.open(path).convert('RGB')
@@ -95,7 +95,7 @@ class NeuralStyleTransfer:
         picture = self.im_convert(self.target)
         plt.imshow(picture)
         import matplotlib.image as im
-        ll = im.imsave('/content/Result/target.jpg', picture)
+        ll = im.imsave('Result/target.jpg', picture)
 
     def forward(self):
         start = time.time()
@@ -105,8 +105,8 @@ class NeuralStyleTransfer:
                          'conv4_1': .2,
                          'conv5_1': .2}
 
-        show = 500
-        steps = 3000
+        show = 5
+        steps = 100
         c_weight = 2
         s_weight = 50
 
@@ -115,7 +115,7 @@ class NeuralStyleTransfer:
         s_grams = {layer: self.gramian(features) for layer, features in s_features.items()}
 
         opt = optim.Adam([self.target], lr=0.009)
-
+        print('running model')
         for step in range(1, steps + 1):
             opt.zero_grad()
 
@@ -136,6 +136,10 @@ class NeuralStyleTransfer:
         self.save_image()
         return None
 
-if __name__ =='__main__':
-    transfer=NeuralStyleTransfer()
-    transfer.forward('content_image.jpg','style.jpg')
+
+if __name__ == '__main__':
+    content_path = 'content_images/content_image.jpg'
+    style_path = 'style_images/style.jpg'
+    transfer = NeuralStyleTransfer(content_image_path=content_path,style_image_path=style_path)
+    transfer.forward()
+
