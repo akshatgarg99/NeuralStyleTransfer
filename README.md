@@ -4,10 +4,10 @@
 
 Content Image                                                         |  Style Image                                                 | Result            
 :--------------------------------------------------------------------:|:------------------------------------------------------------:|:-------------------------:
-<img src=content_images/content_image2.jpg width="200" height="250"/> |  <img src=style_images/style2.jpg width="200" height="250"/> |  <img src=Result/target2.jpeg width="200" height="250"/>
-<img src=content_images/content_image5.jpg width="200" height="250"/> |  <img src=style_images/style5.jpg width="200" height="250"/> |  <img src=Result/target5.jpg width="200" height="250"/>
-<img src=content_images/content_image3.jpg width="200" height="250"/> |  <img src=style_images/style3.jpg width="200" height="250"/> |  <img src=Result/target3.jpeg width="200" height="250"/>
-<img src=content_images/content_image4.jpg width="200" height="250"/> |  <img src=style_images/style4.jpg width="200" height="250"/> |  <img src=Result/target4.jpg width="200" height="250"/>
+<img src=content_images/content_image2.jpg width="210" height="250"/> |  <img src=style_images/style2.jpg width="210" height="250"/> |  <img src=Result/target2.jpeg width="210" height="250"/>
+<img src=content_images/content_image5.jpg width="210" height="250"/> |  <img src=style_images/style5.jpg width="210" height="250"/> |  <img src=Result/target5.jpg width="210" height="250"/>
+<img src=content_images/content_image3.jpg width="210" height="250"/> |  <img src=style_images/style3.jpg width="210" height="250"/> |  <img src=Result/target3.jpeg width="210" height="250"/>
+<img src=content_images/content_image4.jpg width="210" height="250"/> |  <img src=style_images/style4.jpg width="210" height="250"/> |  <img src=Result/target4.jpg width="210" height="250"/>
 
 
 
